@@ -14,7 +14,7 @@ public class Intru implements Visitor{
     private Case[][] fieldOfView ;
     private HashMap<String,Integer> positionList = new HashMap<>();
     private int position;
-    private int stateOfMind=0;
+    private int stateOfMind;
     private HashMap<String,Integer> numberTypeDeplacement = new HashMap<String, Integer>();
     public Intru(int abscisse,int ordonne){
         this.abscisse=abscisse;
@@ -28,19 +28,21 @@ public class Intru implements Visitor{
         return valeurMin + rnd.nextInt(valeurMax - valeurMin);
     }
     public void updateStateOfMind(int mode){
-        if (stateOfMind!=2){
-            for (int i=0;i<=4;i++){
+        stateOfMind=numberTypeDeplacement.get("aleatoir");
+        for (int i=0;i<=4;i++){
                 for (int j=0;j<=4;j++){
                     // 2 <=> gardien
                     if (fieldOfView[i][j].getNumberTypeListe().contains(2)){
-                        System.out.println("alérte");
-                        stateOfMind=numberTypeDeplacement.get("aleatoir");
+                        stateOfMind=numberTypeDeplacement.get("alerte");
                     }
-                    else stateOfMind=numberTypeDeplacement.get("aleatoir");
                 }
             }
-        }
     }
+
+    public int getStateOfMind() {
+        return stateOfMind;
+    }
+
     public void setStateOfMind(int stateOfMind) {
         this.stateOfMind = stateOfMind;
     }
@@ -64,9 +66,15 @@ public class Intru implements Visitor{
                 setPosition(tmp[2]);
             }
             break;
-            case 1 : Deplacement.deplacerGuide(abscisse,ordonne);
+            case 1 : //Deplacement.deplacerGuide(abscisse,ordonne);
                 break;
-            case 2 : Deplacement.deplacerAlert(abscisse,ordonne,fieldOfView);
+            case 2 : {
+                int[] tmp = (new Deplacement()).deplacerAleatoir(abscisse,ordonne,fieldOfView,position,"intru");
+                setAbscisse(tmp[0]);
+                setOrdonne(tmp[1]);
+                setPosition(tmp[2]);
+                //Deplacement.deplacerAlert(abscisse,ordonne,fieldOfView);
+            }
         }
     }
 

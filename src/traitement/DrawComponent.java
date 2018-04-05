@@ -146,7 +146,7 @@ public class DrawComponent{
                     }
                 }
                 if(grille.getGrille()[i][j].getNumberTypeListe().contains(4)) {
-                    if(!gardienIsNier(grille.getGrille()[i][j].getType().getIntru().getFieldOfView())){
+                    if(grille.getGrille()[i][j].getType().getIntru().getStateOfMind()==2){
                         switch (grille.getGrille()[i][j].getType().getIntru().getPosition()){
                             case 1: drawIntruUp(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,count);
                                 break;
@@ -159,7 +159,6 @@ public class DrawComponent{
                         }
                     }
                 }
-
             }
         }
     }

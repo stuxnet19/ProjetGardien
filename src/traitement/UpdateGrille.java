@@ -51,6 +51,7 @@ public class UpdateGrille {
                         grille[grille[i][j].getType().getIntru().getOrdonne()][grille[i][j].getType().getIntru().getAbscisse()].addType(4);
                         grille[grille[i][j].getType().getIntru().getOrdonne()][grille[i][j].getType().getIntru().getAbscisse()].getType().getIntru().setPosition(grille[i][j].getType().getIntru().getPosition());
                         grille[grille[i][j].getType().getIntru().getOrdonne()][grille[i][j].getType().getIntru().getAbscisse()].getType().getIntru().setPhase(nextPhase(curentPhase));
+                        grille[grille[i][j].getType().getIntru().getOrdonne()][grille[i][j].getType().getIntru().getAbscisse()].getType().getIntru().setStateOfMind(grille[i][j].getType().getIntru().getStateOfMind());
                         grille[i][j].removeType(4);
                     }
                 }

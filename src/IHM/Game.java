@@ -78,7 +78,8 @@ public class Game extends JPanel implements Runnable {
         initialisation();
         int count = 0;
         while (runing){
-                try {
+            paintComponent(graphics,count);
+            try {
                     TimeUnit.MILLISECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -87,7 +88,6 @@ public class Game extends JPanel implements Runnable {
                 updateData();
                 count=0;
             }
-            paintComponent(graphics,count);
             count++;
         }
         stop();
