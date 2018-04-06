@@ -12,15 +12,16 @@ public class Grille {
     private HashMap<String,Integer> gameModeTypes=new HashMap();
     private Case[][] grille;
     private HashMap<String,Integer> objectsType = new HashMap<String, Integer>();
-    public Grille(int nbrLine,int nbrCol){
-        System.out.println(nbrCol+"------"+nbrLine);
+    public Grille(int nbrLine,int nbrCol,int gameMode){
+        if (gameMode==1)setNbrDeGardien(1);
+        else setNbrDeGardien(3);
+        setGameMode(gameMode);
         setNbrCol(nbrCol);
         setNbrLine(nbrLine);
         grille=new Case[nbrLine][nbrCol];
         initObjectType();
         initGrille();
         initGameModeTypes();
-        setGameMode(gameMode);
     }
     public void setGameMode(int gameMode) {
         this.gameMode = gameMode;
@@ -46,7 +47,6 @@ public class Grille {
         initGardien();
         initIntru();
     }
-    public void setGameMode(){}
     public void initHerbe() {
         for (int i = 0; i < nbrLine; i++) {
             for (int j=0; j < nbrCol; j++) {
@@ -89,8 +89,9 @@ public class Grille {
     //mettre le Gadien a la case(1,1) au depart
     public void initGardien() {
         int x,y;
+        System.out.println(getNbrDeGardien());
         Random random = new Random();
-        for (int i=0;i<2;i++){
+        for (int i=0;i<getNbrDeGardien();i++){
             x = nbrAleatoire(2,getNbrLine());
             y = nbrAleatoire(2,getNbrCol());
             while((grille[x][y].getNumberTypeListe().contains(objectsType.get("eau")))||(grille[x][y].getNumberTypeListe().contains(objectsType.get("gardien")))||(grille[x][y].getNumberTypeListe().contains(objectsType.get("mur")))){
@@ -120,7 +121,7 @@ public class Grille {
     public void initIntru(){
         int x,y;
         Random random = new Random();
-       for (int i=0;i<5;i++){
+       for (int i=0;i<10;i++){
            x = nbrAleatoire(10,getNbrLine());
            y = nbrAleatoire(20,getNbrCol());
            while((grille[x][y].getNumberTypeListe().contains(objectsType.get("eau")))||(grille[x][y].getNumberTypeListe().contains(objectsType.get("intru")))||(grille[x][y].getNumberTypeListe().contains(objectsType.get("mur")))){

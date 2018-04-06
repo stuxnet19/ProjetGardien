@@ -5,6 +5,8 @@ import java.awt.Dialog.ModalExclusionType;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -17,8 +19,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-public class FirstFrame extends JFrame {
-	private int gameMode=1;
+public class FirstFrame extends JFrame{
+	private int gameMode=0;
 	private JPanel contentPane;
 
 	/**
@@ -103,5 +105,6 @@ public class FirstFrame extends JFrame {
 		panel.add(lblNewLabel);
 		contentPane.setLayout(gl_contentPane);
 	}
+
 }
 

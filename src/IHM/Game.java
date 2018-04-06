@@ -4,11 +4,15 @@ import plateforme.Grille;
 import traitement.DrawComponent;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.util.concurrent.TimeUnit ;
 import javax.swing.*;
 
-public class Game extends JPanel implements Runnable {
+public class Game extends JPanel implements Runnable,KeyListener{
     public String title;
     public int width;
     public int height;
@@ -25,14 +29,17 @@ public class Game extends JPanel implements Runnable {
         this.width=width;
         this.height = height;
         this.title = title;
-        grille=new Grille(height/31,width/31);
         //esseyer de la mttre dans la méthode updateData si ya un probléme
     }
     public void setGameMode(int gameMode){
         this.gameMode=gameMode;
     }
     public void initialisation(){
+        grille=new Grille(height/31,width/31,gameMode);
         init = new InitGameScrean(width,height,title);
+        init.gameMap.addKeyListener(this);
+        init.gameMap.setFocusable(true);
+        init.gameMap.setFocusTraversalKeysEnabled(false);
     }
     public void updateData(){
         grille = grille.getUpdatedInstance();
@@ -73,6 +80,19 @@ public class Game extends JPanel implements Runnable {
             System.out.println(e.getMessage());
         }
     }
+    @Override
+    public void keyPressed(KeyEvent e) {
+        switch (e.getKeyChar()){
+            case 'z':System.out.println("haut");
+                break;
+            case 'q':System.out.println("gauch");
+                break;
+            case 's':System.out.println("bas");
+                break;
+            case 'd':System.out.println("droit");
+                break;
+        }
+    }
     // ------------------------------boucle initiale-------------------------------
     public void run(){
         initialisation();
@@ -93,7 +113,18 @@ public class Game extends JPanel implements Runnable {
         stop();
     }
     //-------------------------------------------------------------------------------
+
     public InitGameScrean getGameScrean() {
         return init;
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
     }
 }

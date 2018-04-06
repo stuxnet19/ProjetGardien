@@ -58,7 +58,8 @@ public class Gardien implements Visitor{
         public int getPosition(){
         return position;
         }
-    public void updatePosition(){
+    public void updatePosition(int gameMode){
+        //if (gameMode!=1)stateOfMind=
         switch (stateOfMind){
             case 0 : {
                 int[] tmp = (new Deplacement()).deplacerAleatoir(abscisse,ordonne,fieldOfView,position,"gardien");
