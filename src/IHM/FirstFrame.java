@@ -20,7 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 public class FirstFrame extends JFrame{
-	private int gameMode=0;
+	private int gameMode=1;
 	private JPanel contentPane;
 
 	/**

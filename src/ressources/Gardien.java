@@ -40,7 +40,6 @@ public class Gardien implements Visitor{
         numberTypeDeplacement.put("alerte",2);
     }
     public void updateStateOfMind(int mode){
-        if (stateOfMind!=2){
             for (int i=0;i<=4;i++){
                 for (int j=0;j<=4;j++){
                     // 4 <=> intru
@@ -50,16 +49,16 @@ public class Gardien implements Visitor{
                         else stateOfMind=numberTypeDeplacement.get("aleatoir");
                     }
                 }
-            }
-        }
+        if (mode==1)stateOfMind=numberTypeDeplacement.get("guide");
+    }
         public void setPosition(int position){
             this.position=position;
         }
         public int getPosition(){
         return position;
         }
-    public void updatePosition(int gameMode){
-        //if (gameMode!=1)stateOfMind=
+    public void updatePosition(int direction){
+        System.out.println(direction);
         switch (stateOfMind){
             case 0 : {
                 int[] tmp = (new Deplacement()).deplacerAleatoir(abscisse,ordonne,fieldOfView,position,"gardien");
@@ -68,7 +67,12 @@ public class Gardien implements Visitor{
                 setPosition(tmp[2]);
             }
             break;
-            case 1 : Deplacement.deplacerGuide(abscisse,ordonne);
+            case 1 : {
+                int[]tmp = (new Deplacement()).deplacerGuide(abscisse,ordonne,fieldOfView,direction,"gardien");
+                setAbscisse(tmp[0]);
+                setOrdonne(tmp[1]);
+                setPosition(tmp[2]);
+            }
             break;
             case 2 : Deplacement.deplacerAlert(abscisse,ordonne,fieldOfView);
         }

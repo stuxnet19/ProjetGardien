@@ -7,7 +7,7 @@ public class UpdateGrille {
         if (phase==0)return 1;
         else return 0;
     }
-    public static Case[][] updateCaractersBehaviors(Grille gr) {
+    public static Case[][] updateCaractersBehaviors(Grille gr,int direction) {
         int curentPhase = gr.curentPhase;
         boolean intrueChanged = false ;
         int nbrLine = gr.getNbrLine();
@@ -27,20 +27,29 @@ public class UpdateGrille {
                     grille[i][j].getType().getEau().visit(gr);
                 }
                 if(grille[i][j].getNumberTypeListe().contains(2)){
-                    if (gameMode==0){
                        if (grille[i][j].getType().getGardien().getPhase()==curentPhase){
-                            grille[i][j].getType().getGardien().visit(gr);
-                            grille[i][j].getType().getGardien().updateStateOfMind(gameMode);
-                             // mise a jour de la position du gardien
-                            grille[i][j].getType().getGardien().updatePosition(-1);
+                           int absBeforUpdate=grille[i][j].getType().getGardien().getAbscisse();
+                           int ordBeforUpdate=grille[i][j].getType().getGardien().getOrdonne();
+                           int posBeforUpdate=grille[i][j].getType().getGardien().getPosition();
+                           grille[i][j].getType().getGardien().visit(gr);
+                           grille[i][j].getType().getGardien().updateStateOfMind(gameMode);
+                           // mise a jour de la position du gardien
+                            grille[i][j].getType().getGardien().updatePosition(direction);
                             //mise a jour de la porsition dde la case
                             //faire en sorte de passer en  paramétre grille[i][j]
-                            grille[grille[i][j].getType().getGardien().getOrdonne()][grille[i][j].getType().getGardien().getAbscisse()].addType(2);
-                            grille[grille[i][j].getType().getGardien().getOrdonne()][grille[i][j].getType().getGardien().getAbscisse()].getType().getGardien().setPosition(grille[i][j].getType().getGardien().getPosition());
-                            grille[grille[i][j].getType().getGardien().getOrdonne()][grille[i][j].getType().getGardien().getAbscisse()].getType().getGardien().setPhase(nextPhase(curentPhase));
-                            grille[i][j].removeType(2);
+                            if ((grille[i][j].getType().getGardien().getAbscisse()!=absBeforUpdate)||(grille[i][j].getType().getGardien().getOrdonne()!=ordBeforUpdate)){
+                                grille[grille[i][j].getType().getGardien().getOrdonne()][grille[i][j].getType().getGardien().getAbscisse()].addType(2);
+                                grille[grille[i][j].getType().getGardien().getOrdonne()][grille[i][j].getType().getGardien().getAbscisse()].getType().getGardien().setPosition(grille[i][j].getType().getGardien().getPosition());
+                                grille[grille[i][j].getType().getGardien().getOrdonne()][grille[i][j].getType().getGardien().getAbscisse()].getType().getGardien().setPhase(nextPhase(curentPhase));
+                                grille[i][j].removeType(2);
+                                gr.setGardienBlocked(false);
                             }
-                    }
+                            else{
+                                grille[i][j].getType().getGardien().setPosition(posBeforUpdate);
+                                grille[i][j].getType().getGardien().setPhase(nextPhase(curentPhase));
+                                gr.setGardienBlocked(true);
+                            }
+                       }
                 }
                 if(grille[i][j].getNumberTypeListe().contains(3)){
                     grille[i][j].getType().getHerbe().visit(gr);

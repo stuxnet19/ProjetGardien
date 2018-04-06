@@ -12,6 +12,7 @@ public class Grille {
     private HashMap<String,Integer> gameModeTypes=new HashMap();
     private Case[][] grille;
     private HashMap<String,Integer> objectsType = new HashMap<String, Integer>();
+    public boolean gardienBlocked=false;
     public Grille(int nbrLine,int nbrCol,int gameMode){
         if (gameMode==1)setNbrDeGardien(1);
         else setNbrDeGardien(3);
@@ -89,7 +90,6 @@ public class Grille {
     //mettre le Gadien a la case(1,1) au depart
     public void initGardien() {
         int x,y;
-        System.out.println(getNbrDeGardien());
         Random random = new Random();
         for (int i=0;i<getNbrDeGardien();i++){
             x = nbrAleatoire(2,getNbrLine());
@@ -151,8 +151,8 @@ public class Grille {
     public int getNbrDeGardien() {
         return nbrDeGardien;
     }
-    public Grille getUpdatedInstance(){
-        update();
+    public Grille getUpdatedInstance(int direction){
+        update(direction);
         return this;
     }
 
@@ -174,11 +174,14 @@ public class Grille {
     public int getGameMode(){
         return this.gameMode;
     }
-    public void update(){
-        setGrille(UpdateGrille.updateCaractersBehaviors(this));
+    public void update(int direction){
+        setGrille(UpdateGrille.updateCaractersBehaviors(this,direction));
     }
     public void changePhase(){
         if (curentPhase == 0)curentPhase=1;
         else curentPhase = 0 ;
+    }
+    public void setGardienBlocked(boolean gardienBlocked) {
+        this.gardienBlocked = gardienBlocked;
     }
 }

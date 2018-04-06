@@ -108,7 +108,7 @@ public class DrawComponent{
         }
         return contain;
     }
-    public static void drawMap(Graphics g,Grille gr,int count){
+    public static void drawMap(Graphics g,Grille gr,int countGardien,int countIntru,int shift){
         graphics=g;
         grille=gr;
         /*
@@ -132,29 +132,29 @@ public class DrawComponent{
                 if( grille.getGrille()[i][j].getNumberTypeListe().contains(2)) {
                     switch (grille.getGrille()[i][j].getType().getGardien().getPosition()) {
                         //haut
-                        case 1: drawGardienUp(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,count);
+                        case 1: drawGardienUp(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,countGardien+shift);
                             break;
                         //bas
-                        case 2:drawGardienDown(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,count);
+                        case 2:drawGardienDown(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,countGardien+shift);
                             break;
                         //droit
-                        case 3:drawGardienRight(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,count);
+                        case 3:drawGardienRight(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,countGardien+shift);
                             break;
                         //gauche
-                        case 4:drawGardienLeft(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,count);
+                        case 4:drawGardienLeft(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,countGardien+shift);
                             break;
                     }
                 }
                 if(grille.getGrille()[i][j].getNumberTypeListe().contains(4)) {
                     if(grille.getGrille()[i][j].getType().getIntru().getStateOfMind()==2){
                         switch (grille.getGrille()[i][j].getType().getIntru().getPosition()){
-                            case 1: drawIntruUp(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,count);
+                            case 1: drawIntruUp(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,countIntru);
                                 break;
-                            case 2: drawIntruDown(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,count);
+                            case 2: drawIntruDown(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,countIntru);
                                 break;
-                            case 3: drawIntruRight(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,count);
+                            case 3: drawIntruRight(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,countIntru);
                                 break;
-                            case 4: drawIntruLeft(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,count);
+                            case 4: drawIntruLeft(grille.getGrille()[i][j].getOrdonne() * 31, grille.getGrille()[i][j].getAbscisse() * 31,countIntru);
                                 break;
                         }
                     }

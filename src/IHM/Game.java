@@ -23,6 +23,7 @@ public class Game extends JPanel implements Runnable,KeyListener{
     public InitGameScrean init;
     public BufferStrategy buffer;
     public Grille grille;
+    public int direction=2;
     private int gameMode;
     //Constructeur
     public Game(int width,int height,String title){
@@ -41,11 +42,11 @@ public class Game extends JPanel implements Runnable,KeyListener{
         init.gameMap.setFocusable(true);
         init.gameMap.setFocusTraversalKeysEnabled(false);
     }
-    public void updateData(){
-        grille = grille.getUpdatedInstance();
+    public void updateData(int direction){
+        grille = grille.getUpdatedInstance(direction);
         grille.changePhase();
     }
-    public void paintComponent(Graphics g,int count){
+    public void paintComponent(Graphics g,int countGardien,int countIntru,int shift){
         //-------------------------------------------------------
         buffer = init.gameMap.getBufferStrategy();
         if (buffer==null){
@@ -53,7 +54,7 @@ public class Game extends JPanel implements Runnable,KeyListener{
             return;
         }
         g = buffer.getDrawGraphics();
-        DrawComponent.drawMap(g,grille,count);
+        DrawComponent.drawMap(g,grille,countGardien,countIntru,shift);
         buffer.show();
         DrawComponent.getGraphics().dispose();
     //---------------------------------------------------------
@@ -83,32 +84,50 @@ public class Game extends JPanel implements Runnable,KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyChar()){
-            case 'z':System.out.println("haut");
+            case 'z':{
+                direction=1;
+                System.out.println("haut");
+            }
                 break;
-            case 'q':System.out.println("gauch");
+            case 'q':{
+                direction=3;
+                System.out.println("gauche");
+            }
                 break;
-            case 's':System.out.println("bas");
+            case 's':{
+                direction=2;
+                System.out.println("bas");
+            }
                 break;
-            case 'd':System.out.println("droit");
+            case 'd':{
+                direction=4;
+                System.out.println("droit");
+            }
                 break;
         }
     }
     // ------------------------------boucle initiale-------------------------------
     public void run(){
         initialisation();
-        int count = 0;
+        int countGardien = 0;
+        int countIntru = 0;
+        int shift;
         while (runing){
-            paintComponent(graphics,count);
+            if (grille.gardienBlocked==true)shift=31-countGardien;
+            else shift=0;
+            paintComponent(graphics,countGardien,countIntru,shift);
             try {
                     TimeUnit.MILLISECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            if (count==31){
-                updateData();
-                count=0;
+            if ((countGardien==31)&(countIntru==31)){
+                countGardien=0;
+                countIntru=0;
+                updateData(direction);
             }
-            count++;
+            countGardien++;
+            countIntru++;
         }
         stop();
     }

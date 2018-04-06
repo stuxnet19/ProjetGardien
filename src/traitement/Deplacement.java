@@ -1,8 +1,6 @@
 package traitement;
 
 import plateforme.Case;
-import plateforme.Grille;
-import ressources.Intru;
 
 import java.util.*;
 
@@ -109,7 +107,35 @@ public class Deplacement{
     public static int[] deplacerWest(int abscisse,int ordonne){
         return new int[]{abscisse-1,ordonne,4};
     }
-    public static void deplacerGuide(int abscisse,int ordonne){}
+    public int[] deplacerGuide(int abscisse, int ordonne, Case[][] fieldOfView, int direction, String perssonageName){
+        switch (direction) {
+            case 1: {
+                if ((!fieldOfView[1][2].getNumberTypeListe().contains(objectsType.get("eau"))) & (!fieldOfView[1][2].getNumberTypeListe().contains(objectsType.get(perssonageName))) & (!fieldOfView[1][2].getNumberTypeListe().contains(objectsType.get("mur"))) & (!(fieldOfView[1][2].getType() == null))) {
+                    return new int[]{deplacerNord(abscisse, ordonne)[0], deplacerNord(abscisse, ordonne)[1], deplacerNord(abscisse,ordonne)[2]};
+                } else return new int[]{abscisse, ordonne, 1};
+            }
+            case 2 :{
+                if ((!fieldOfView[3][2].getNumberTypeListe().contains(objectsType.get("eau")))&(!fieldOfView[3][2].getNumberTypeListe().contains(objectsType.get(perssonageName)))&(!fieldOfView[3][2].getNumberTypeListe().contains(objectsType.get("mur")))&(!(fieldOfView[3][2].getType()==null))){
+                    return new int[] {deplacerSud(abscisse,ordonne)[0],deplacerSud(abscisse,ordonne)[1],deplacerSud(abscisse,ordonne)[2]};
+                }
+                else return new int[]{abscisse,ordonne,2};
+            }
+            case  3:{
+                if((!fieldOfView[2][1].getNumberTypeListe().contains(objectsType.get("eau")))&(!fieldOfView[2][1].getNumberTypeListe().contains(objectsType.get(perssonageName)))&(!fieldOfView[2][1].getNumberTypeListe().contains(objectsType.get("mur")))&(!(fieldOfView[2][1].getType()==null))){
+                    return new int[] {deplacerWest(abscisse,ordonne)[0],deplacerWest(abscisse,ordonne)[1],deplacerWest(abscisse,ordonne)[2]};
+                }
+                else return new int[]{abscisse,ordonne,4};
+            }
+            case 4 :{
+                if((!fieldOfView[2][3].getNumberTypeListe().contains(objectsType.get("eau")))&(!fieldOfView[2][3].getNumberTypeListe().contains(objectsType.get(perssonageName)))&(!fieldOfView[2][3].getNumberTypeListe().contains(objectsType.get("mur")))&(!(fieldOfView[2][3].getType()==null))){
+                    return new int[] {deplacerEast(abscisse,ordonne)[0],deplacerEast(abscisse,ordonne)[1],deplacerEast(abscisse,ordonne)[2]};
+                }
+                else return new int[]{abscisse,ordonne,3};
+            }
+        }
+        System.out.println("probléme avec le déplacement guide");
+        return new int[]{abscisse,ordonne,2};
+    }
     public static void deplacerAlert(int abscisse, int ordonne, Case[][] fieldOfView){
 
     }
