@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -22,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 public class FirstFrame extends JFrame{
 	private int gameMode=1;
 	private JPanel contentPane;
+	private HashMap<String,Integer> itemNumbers = new HashMap<String, Integer>();
 
 	/**
 	 * to launch the application.n
@@ -40,6 +42,9 @@ public class FirstFrame extends JFrame{
 	/**
 	 * to create the frame.
 	 */
+	public FirstFrame getInstance(){
+		return this;
+	}
 	public FirstFrame() {
 		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,11 +58,10 @@ public class FirstFrame extends JFrame{
 				System.exit(0);
 			}
 		});
-		
 		JButton btnMenu = new JButton("MENU");
 		btnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				FirstDialog fd= new FirstDialog();
+				FirstDialog fd= new FirstDialog(itemNumbers,getInstance());
 				fd.setVisible(true);
 			}
 		});
@@ -66,6 +70,8 @@ public class FirstFrame extends JFrame{
 		btnStart.addActionListener((new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
+				System.out.println(itemNumbers);
+				System.out.println(gameMode);
 				Game game = new Game(31*41,31*21,"gardien");
 				game.setGameMode(gameMode);
 				game.start();
@@ -106,5 +112,12 @@ public class FirstFrame extends JFrame{
 		contentPane.setLayout(gl_contentPane);
 	}
 
+	public void setItemNumbers(HashMap<String, Integer> itemNumbers) {
+		this.itemNumbers = itemNumbers;
+	}
+
+	public void setGameMode(int gameMode) {
+		this.gameMode = gameMode;
+	}
 }
 

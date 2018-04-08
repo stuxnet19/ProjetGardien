@@ -47,17 +47,17 @@ public class Intru implements Visitor{
         this.stateOfMind = stateOfMind;
     }
     public void initPositionList(){
-        positionList.put("haut",1);
-        positionList.put("bas",2);
-        positionList.put("droite",3);
-        positionList.put("gauche",4);
+        positionList.put("nord",1);
+        positionList.put("sud",2);
+        positionList.put("east",3);
+        positionList.put("west",4);
     }
     public void initDeplacementType(){
         numberTypeDeplacement.put("aleatoir",0);
         numberTypeDeplacement.put("guide",1);
         numberTypeDeplacement.put("alerte",2);
     }
-    public void updatePosition(){
+    public void updatePosition(int gameMode){
         switch (stateOfMind){
             case 0 : {
                 int[] tmp = (new Deplacement()).deplacerAleatoir(abscisse,ordonne,fieldOfView,position,"intru");
@@ -69,15 +69,21 @@ public class Intru implements Visitor{
             case 1 : //Deplacement.deplacerGuide(abscisse,ordonne);
                 break;
             case 2 : {
-                int[] tmp = (new Deplacement()).deplacerAleatoir(abscisse,ordonne,fieldOfView,position,"intru");
-                setAbscisse(tmp[0]);
-                setOrdonne(tmp[1]);
-                setPosition(tmp[2]);
-                //Deplacement.deplacerAlert(abscisse,ordonne,fieldOfView);
+                if(gameMode==1){
+                    int[] tmp = (new Deplacement()).deplacerAlert(abscisse,ordonne,fieldOfView,"intru",position,positionList);
+                    setAbscisse(tmp[0]);
+                    setOrdonne(tmp[1]);
+                    setPosition(tmp[2]);
+                }
+                else{
+                    int[] tmp = (new Deplacement()).deplacerAleatoir(abscisse,ordonne,fieldOfView,position,"intru");
+                    setAbscisse(tmp[0]);
+                    setOrdonne(tmp[1]);
+                    setPosition(tmp[2]);
+                }
             }
         }
     }
-
     public int getPosition() {
         return position;
     }

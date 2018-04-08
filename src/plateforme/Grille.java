@@ -5,9 +5,9 @@ import java.util.Random;
 public class Grille {
     private int nbrLine ;
     private int nbrCol ;
-    private int nbrDeGardien;
-    private int nbrIntrus;
-    private int gameMode ;
+    private int nbrDeGardien=2;
+    private int nbrIntrus=4;
+    private int gameMode=1 ;
     public int curentPhase=0;
     private HashMap<String,Integer> gameModeTypes=new HashMap();
     private Case[][] grille;
@@ -15,7 +15,7 @@ public class Grille {
     public boolean gardienBlocked=false;
     public Grille(int nbrLine,int nbrCol,int gameMode){
         if (gameMode==1)setNbrDeGardien(1);
-        else setNbrDeGardien(3);
+        else setNbrDeGardien(nbrDeGardien);
         setGameMode(gameMode);
         setNbrCol(nbrCol);
         setNbrLine(nbrLine);
@@ -56,8 +56,8 @@ public class Grille {
         }
     }
     public void initEau(){
-        for (int i=5;i<14;i++){
-            for (int j=3;j<11;j++) {
+        for (int i=5;i<11;i++){
+            for (int j=3;j<9;j++) {
                 grille[i][j].addType(objectsType.get("eau"));
             }
         }
@@ -67,7 +67,6 @@ public class Grille {
         grille[11][4].addType(objectsType.get("eau"));
         grille[11][7].addType(objectsType.get("eau"));
         grille[11][8].addType(objectsType.get("eau"));
-
     }
     public void initMur(){
         for (int i=0;i<getNbrLine();i++){
@@ -75,7 +74,7 @@ public class Grille {
                 if(((i==0)||(i==1))||((j==0)||(j==1))){
                     grille[i][j].addType(objectsType.get("mur"));
                 }
-                if(((i>=17)&(i<=19)&(j<=32))||((j==32)||(j==31))&(i<=18)){
+                if(((i>=17)&(i<=19)&((j<=14)||((j>=17)&(j<=32))))||((j==32)||(j==31))&(i<=18)){
                     grille[i][j].addType(objectsType.get("mur"));
                 }
             }
@@ -99,9 +98,7 @@ public class Grille {
                 y = nbrAleatoire(2,getNbrCol());
             }
             grille[x][y].addType(objectsType.get("gardien"));
-
         }
-        setNbrDeGardien(2);
     }
     public int nbrAleatoire(int valeurMin,int valeurMax) {
         Random rnd=new Random();
@@ -121,7 +118,7 @@ public class Grille {
     public void initIntru(){
         int x,y;
         Random random = new Random();
-       for (int i=0;i<10;i++){
+       for (int i=0;i<getNbrIntrus();i++){
            x = nbrAleatoire(10,getNbrLine());
            y = nbrAleatoire(20,getNbrCol());
            while((grille[x][y].getNumberTypeListe().contains(objectsType.get("eau")))||(grille[x][y].getNumberTypeListe().contains(objectsType.get("intru")))||(grille[x][y].getNumberTypeListe().contains(objectsType.get("mur")))){
@@ -130,24 +127,19 @@ public class Grille {
            }
            grille[x][y].addType(objectsType.get("intru"));
        }
-       setNbrIntrus(5);
     }
     public int getNbrCol() {
         return nbrCol;
     }
-
     public void setNbrCol(int nbrCol) {
         this.nbrCol = nbrCol;
     }
-
     public int getNbrLine() {
         return nbrLine;
     }
-
     public void setNbrLine(int nbrLine) {
         this.nbrLine = nbrLine;
     }
-
     public int getNbrDeGardien() {
         return nbrDeGardien;
     }
@@ -155,7 +147,6 @@ public class Grille {
         update(direction);
         return this;
     }
-
     public void setGrille(Case[][] grille) {
         this.grille = grille;
     }

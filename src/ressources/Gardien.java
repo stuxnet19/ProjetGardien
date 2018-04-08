@@ -11,6 +11,7 @@ public class Gardien implements Visitor{
     private int abscisse;
     private int position;
     private int phase=0;
+    private int mouvementPhase = 1;
     private HashMap<String,Integer> positionList = new HashMap<>();
     private Case[][] fieldOfView;
     private HashMap<String,Integer> numberTypeDeplacement = new HashMap<String, Integer>();
@@ -74,7 +75,7 @@ public class Gardien implements Visitor{
                 setPosition(tmp[2]);
             }
             break;
-            case 2 : Deplacement.deplacerAlert(abscisse,ordonne,fieldOfView);
+            case 2 : //Deplacement.deplacerAlert(abscisse,ordonne,fieldOfView);
         }
     }
     public int getOrdonne() {
@@ -107,6 +108,20 @@ public class Gardien implements Visitor{
 
     public void setPhase(int phase) {
         this.phase = phase;
+    }
+    public void changeMouvementPhase(){
+        this.mouvementPhase=this.mouvementPhase+4;
+        if (this.mouvementPhase>7){
+            this.mouvementPhase=1;
+        }
+    }
+
+    public int getMouvementPhase() {
+        return mouvementPhase;
+    }
+
+    public void setMouvementPhase(int mouvementPhase) {
+        this.mouvementPhase = mouvementPhase;
     }
 }
 

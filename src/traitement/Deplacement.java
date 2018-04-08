@@ -22,7 +22,7 @@ public class Deplacement{
         Random rnd=new Random();
         return valeurMin + rnd.nextInt(valeurMax - valeurMin);
     }
-    public int[] deplacerAleatoir(int abscisse, int ordonne, Case[][] fieldOfView, int position,String perssonageName) {
+    public int[] deplacerAleatoir(int abscisse, int ordonne, Case[][] fieldOfView, int position,String perssonageName){
         directions.put("nord", 1);
         directions.put("sud", 1);
         directions.put("east", 1);
@@ -136,7 +136,306 @@ public class Deplacement{
         System.out.println("probléme avec le déplacement guide");
         return new int[]{abscisse,ordonne,2};
     }
-    public static void deplacerAlert(int abscisse, int ordonne, Case[][] fieldOfView){
+    public boolean gardianOnTheWay(Case[][] field , int direction){
+        switch (direction){
+            case 1 : {
+                for (int i=0;i<2;i++){
+                    if (field[i][2].getNumberTypeListe().contains(2))return true;
+                    else return false ;
+                }
+            }
+                break;
+            case 2 : {
+                for (int i=3;i<5;i++){
+                    if (field[i][2].getNumberTypeListe().contains(2))return true;
+                    else return false ;
+                }
+            }
+                break;
+            case 3 :{
+                for (int j=3;j<5;j++){
+                    if (field[2][j].getNumberTypeListe().contains(2))return true;
+                    else return false ;
+                }
+            }
+                break;
+            case 4 :{
+                for (int j=0;j<2;j++){
+                    if (field[2][j].getNumberTypeListe().contains(2))return true;
+                    else return false ;
+                }
+            }
+                break;
+        }
+        return false;
+    }
+    public int[] deplacerAlert(int abscisse, int ordonne, Case[][] fieldOfView ,String persType,int position,HashMap<String,Integer> directions){
+        switch (objectsType.get(persType)){
+            /*
+            2 : algorithme pour le gardien
+            4 : algorithme pour l'intru
+             */
+            case 2 : System.out.println("faut finir le projet !!!!!!!!");
+            break;
+            case 4 :{
+                if (directions.get("nord")+directions.get("sud")+directions.get("east")+directions.get("west")>0){
+                    switch (position){
+                        case 1 : {
+                            for (int i=0;i<2;i++){
+                                for (int j=0;j<5;j++){
+                                    if (fieldOfView[i][j].getNumberTypeListe().contains(2)){
+                                        directions.put("nord",0);
+                                        deplacerAlert(abscisse, ordonne, fieldOfView ,persType,2,directions);
+                                    }
+                                    else{
+                                        if(fieldOfView[3][2].getNumberTypeListe().contains(1)||fieldOfView[3][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,2)){
+                                            if (j<2) {
+                                                if(fieldOfView[2][3].getNumberTypeListe().contains(1)||fieldOfView[2][3].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,3)){
+                                                    if (fieldOfView[2][1].getNumberTypeListe().contains(1)||fieldOfView[2][1].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,4)){
+                                                        return new int[]{abscisse,ordonne,position};
+                                                    }
+                                                    else return deplacerWest(abscisse,ordonne);
+                                                }
+                                                else return deplacerEast(abscisse, ordonne);
+                                            }
+                                            if (j>2){
+                                                if (fieldOfView[2][1].getNumberTypeListe().contains(1)||fieldOfView[2][1].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,4)){
+                                                    if (fieldOfView[2][3].getNumberTypeListe().contains(1)||fieldOfView[2][3].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,3)){
+                                                        return new int[]{abscisse,ordonne,position};
+                                                    }
+                                                    else return deplacerEast(abscisse, ordonne);
+                                                }
+                                                else return deplacerWest(abscisse, ordonne);
+                                            }
+                                            if (j==2){
+                                                /*
+                                                0 : droite
+                                                1 : gauche
+                                                 */
+                                                int tmp = nbrAleatoire(0,1);
+                                                switch (tmp){
+                                                    case 0 :{
+                                                        if (fieldOfView[2][3].getNumberTypeListe().contains(2)||fieldOfView[2][3].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,3)){
+                                                            if (fieldOfView[2][1].getNumberTypeListe().contains(2)||fieldOfView[2][1].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,4)){
+                                                                return new int[] {abscisse,ordonne,position};
+                                                            }
+                                                            else return deplacerWest(abscisse, ordonne);
+                                                        }
+                                                        else return deplacerEast(abscisse, ordonne);
+                                                    }
+                                                    case 1 : {
+                                                        if (fieldOfView[2][1].getNumberTypeListe().contains(2)||fieldOfView[2][1].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,4)){
+                                                            if (fieldOfView[2][3].getNumberTypeListe().contains(2)||fieldOfView[2][3].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,3)){
+                                                                return new int[] {abscisse,ordonne,position};
+                                                            }
+                                                            else return deplacerEast(abscisse, ordonne);
+                                                        }
+                                                        else return deplacerEast(abscisse, ordonne);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else return deplacerSud(abscisse, ordonne);
+                                    }
+                                }
+                            }
+                            return deplacerNord(abscisse, ordonne);
+                        }
+                        case 2 :{
+                            for (int i=3;i<4;i++){
+                                for (int j=0;j<4;j++){
+                                    if (fieldOfView[2][3].getNumberTypeListe().contains(2)){
+                                        directions.put("sud",0);
+                                        deplacerAlert(abscisse, ordonne, fieldOfView, persType, 3, directions);
+                                    }
+                                    else{
+                                        if(fieldOfView[1][2].getNumberTypeListe().contains(1)||fieldOfView[1][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,1)){
+                                            if (j<2) {
+                                                if(fieldOfView[2][3].getNumberTypeListe().contains(1)||fieldOfView[2][3].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,3)){
+                                                    if (fieldOfView[2][1].getNumberTypeListe().contains(1)||fieldOfView[2][1].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,4)){
+                                                        return new int[]{abscisse,ordonne,position};
+                                                    }
+                                                    else return deplacerWest(abscisse,ordonne);
+                                                }
+                                                else return deplacerEast(abscisse, ordonne);
+                                            }
+                                            if (j>2){
+                                                if (fieldOfView[2][1].getNumberTypeListe().contains(1)||fieldOfView[2][1].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,4)){
+                                                    if (fieldOfView[2][3].getNumberTypeListe().contains(1)||fieldOfView[2][3].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,3)){
+                                                        return new int[]{abscisse,ordonne,position};
+                                                    }
+                                                    else return deplacerEast(abscisse, ordonne);
+                                                }
+                                                else return deplacerWest(abscisse, ordonne);
+                                            }
+                                            if (j==2){
+                                                /*
+                                                0 : droite
+                                                1 : gauche
+                                                 */
+                                                int tmp = nbrAleatoire(0,1);
+                                                switch (tmp){
+                                                    case 0 :{
+                                                        if (fieldOfView[2][3].getNumberTypeListe().contains(2)||fieldOfView[2][3].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,3)){
+                                                            if (fieldOfView[2][1].getNumberTypeListe().contains(2)||fieldOfView[2][1].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,4)){
+                                                                return new int[] {abscisse,ordonne,position};
+                                                            }
+                                                            else return deplacerWest(abscisse, ordonne);
+                                                        }
+                                                        else return deplacerEast(abscisse, ordonne);
+                                                    }
+                                                    case 1 : {
+                                                        if (fieldOfView[2][1].getNumberTypeListe().contains(2)||fieldOfView[2][1].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,4)){
+                                                            if (fieldOfView[2][3].getNumberTypeListe().contains(2)||fieldOfView[2][3].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,3)){
+                                                                return new int[] {abscisse,ordonne,position};
+                                                            }
+                                                            else return deplacerEast(abscisse, ordonne);
+                                                        }
+                                                        else return deplacerEast(abscisse, ordonne);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else return deplacerNord(abscisse, ordonne);
+                                    }
+                                }
+                            }
+                            return deplacerSud(abscisse, ordonne);
+                        }
+                        case 3 :{
+                            for (int i=0;i<5;i++){
+                                for (int j=3;j<5;j++){
+                                    if (fieldOfView[i][j].getNumberTypeListe().contains(2)){
+                                        directions.put("east",0);
+                                        deplacerAlert(abscisse, ordonne, fieldOfView, persType, 4, directions);
+                                    }
+                                    else{
+                                        if (fieldOfView[2][1].getNumberTypeListe().contains(1)||fieldOfView[2][1].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,4)){
+                                            if (i<2){
+                                                if (fieldOfView[3][2].getNumberTypeListe().contains(1)||fieldOfView[3][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,2)){
+                                                    if (fieldOfView[1][2].getNumberTypeListe().contains(1)||fieldOfView[1][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,1)){
+                                                        return new int[] {abscisse,ordonne,position};
+                                                    }
+                                                    else return deplacerNord(abscisse, ordonne);
+                                                }
+                                                else return deplacerSud(abscisse, ordonne);
+                                            }
+                                            if(i>2){
+                                                if (fieldOfView[1][2].getNumberTypeListe().contains(1)||fieldOfView[1][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,1)){
+                                                    if (fieldOfView[3][2].getNumberTypeListe().contains(1)||fieldOfView[3][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,2)){
+                                                        return new int[] {abscisse,ordonne,position};
+                                                    }
+                                                    else return deplacerSud(abscisse, ordonne);
+                                                }
+                                                else return deplacerNord(abscisse, ordonne);
+                                            }
+                                            if(i==2){
+                                                /*
+                                                0 : nord
+                                                1 : sud
+                                                 */
+                                                int tmp = nbrAleatoire(0,1);
+                                                switch (tmp){
+                                                    case 0 : {
+                                                        if (fieldOfView[1][2].getNumberTypeListe().contains(1)||fieldOfView[1][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,1)){
+                                                            if (fieldOfView[3][2].getNumberTypeListe().contains(1)||fieldOfView[3][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,2)){
+                                                                return new int[] {abscisse,ordonne,position};
+                                                            }
+                                                            else return deplacerSud(abscisse, ordonne);
+                                                        }
+                                                        else return deplacerNord(abscisse, ordonne);
+                                                    }
 
+                                                    case 1 : {
+                                                        if (fieldOfView[3][2].getNumberTypeListe().contains(1)||fieldOfView[3][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,2)){
+                                                            if (fieldOfView[1][2].getNumberTypeListe().contains(1)||fieldOfView[1][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,1)){
+                                                                return new int[] {abscisse,ordonne,position};
+                                                            }
+                                                            else return deplacerNord(abscisse, ordonne);
+                                                        }
+                                                        else return deplacerSud(abscisse, ordonne);
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                        else return deplacerWest(abscisse, ordonne);
+                                    }
+                                }
+                            }
+                            return deplacerEast(abscisse, ordonne);
+                       }
+                        case 4 :{
+                            for (int i=0;i<5;i++){
+                                for (int j=0;j<2;j++){
+                                    if (fieldOfView[i][j].getNumberTypeListe().contains(2)){
+                                        directions.put("west",0);
+                                        deplacerAlert(abscisse, ordonne, fieldOfView, persType, 1, directions);
+                                    }
+                                    else{
+                                        if (fieldOfView[2][3].getNumberTypeListe().contains(1)||fieldOfView[2][3].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,4)){
+                                            if (i<2){
+                                                if (fieldOfView[3][2].getNumberTypeListe().contains(1)||fieldOfView[3][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,2)){
+                                                    if (fieldOfView[1][2].getNumberTypeListe().contains(1)||fieldOfView[1][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,1)){
+                                                        return new int[] {abscisse,ordonne,position};
+                                                    }
+                                                    else return deplacerNord(abscisse, ordonne);
+                                                }
+                                                else return deplacerSud(abscisse, ordonne);
+                                            }
+                                            if(i>2){
+                                                if (fieldOfView[1][2].getNumberTypeListe().contains(1)||fieldOfView[1][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,1)){
+                                                    if (fieldOfView[3][2].getNumberTypeListe().contains(1)||fieldOfView[3][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,2)){
+                                                        return new int[] {abscisse,ordonne,position};
+                                                    }
+                                                    else return deplacerSud(abscisse, ordonne);
+                                                }
+                                                else return deplacerNord(abscisse, ordonne);
+                                            }
+                                            if(i==2){
+                                                /*
+                                                0 : nord
+                                                1 : sud
+                                                 */
+                                                int tmp = nbrAleatoire(0,1);
+                                                switch (tmp){
+                                                    case 0 : {
+                                                        if (fieldOfView[1][2].getNumberTypeListe().contains(1)||fieldOfView[1][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,1)){
+                                                            if (fieldOfView[3][2].getNumberTypeListe().contains(1)||fieldOfView[3][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,2)){
+                                                                return new int[] {abscisse,ordonne,position};
+                                                            }
+                                                            else return deplacerSud(abscisse, ordonne);
+                                                        }
+                                                        else return deplacerNord(abscisse, ordonne);
+                                                    }
+
+                                                    case 1 : {
+                                                        if (fieldOfView[3][2].getNumberTypeListe().contains(1)||fieldOfView[3][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,2)){
+                                                            if (fieldOfView[1][2].getNumberTypeListe().contains(1)||fieldOfView[1][2].getNumberTypeListe().contains(5)||gardianOnTheWay(fieldOfView,1)){
+                                                                return new int[] {abscisse,ordonne,position};
+                                                            }
+                                                            else return deplacerNord(abscisse, ordonne);
+                                                        }
+                                                        else return deplacerSud(abscisse, ordonne);
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                        else return deplacerEast(abscisse, ordonne);
+                                    }
+
+                                }
+                            }
+                            return deplacerWest(abscisse, ordonne);
+                        }
+                    }
+                }
+                else return new int[] {abscisse,ordonne};
+            }
+            break;
+            default : return new int[] {abscisse,ordonne};
+        }
+    return null;
     }
 }

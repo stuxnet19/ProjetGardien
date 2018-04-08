@@ -19,6 +19,7 @@ public class UpdateGrille {
             for (int j=0;j<nbrCol;j++){
                 if ((grille[i][j].getNumberTypeListe().contains(2))&(grille[i][j].getNumberTypeListe().contains(4))){
                     grille[i][j].removeType(4);
+                    gr.setNbrIntrus(gr.getNbrIntrus()-1);
                 }
                 if(grille[i][j].getNumberTypeListe().contains(0)){
                     grille[i][j].getType().getArbre().visit(gr);
@@ -33,14 +34,20 @@ public class UpdateGrille {
                            int posBeforUpdate=grille[i][j].getType().getGardien().getPosition();
                            grille[i][j].getType().getGardien().visit(gr);
                            grille[i][j].getType().getGardien().updateStateOfMind(gameMode);
-                           // mise a jour de la position du gardien
+                           grille[i][j].getType().getGardien().changeMouvementPhase();
+                           //mise a jour de la position du gardien
                             grille[i][j].getType().getGardien().updatePosition(direction);
                             //mise a jour de la porsition dde la case
                             //faire en sorte de passer en  paramétre grille[i][j]
                             if ((grille[i][j].getType().getGardien().getAbscisse()!=absBeforUpdate)||(grille[i][j].getType().getGardien().getOrdonne()!=ordBeforUpdate)){
-                                grille[grille[i][j].getType().getGardien().getOrdonne()][grille[i][j].getType().getGardien().getAbscisse()].addType(2);
-                                grille[grille[i][j].getType().getGardien().getOrdonne()][grille[i][j].getType().getGardien().getAbscisse()].getType().getGardien().setPosition(grille[i][j].getType().getGardien().getPosition());
-                                grille[grille[i][j].getType().getGardien().getOrdonne()][grille[i][j].getType().getGardien().getAbscisse()].getType().getGardien().setPhase(nextPhase(curentPhase));
+                                grille[grille[i][j].getType().getGardien().getOrdonne()][grille[i][j].getType().getGardien().getAbscisse()]
+                                        .addType(2);
+                                grille[grille[i][j].getType().getGardien().getOrdonne()][grille[i][j].getType().getGardien().getAbscisse()]
+                                        .getType().getGardien().setPosition(grille[i][j].getType().getGardien().getPosition());
+                                grille[grille[i][j].getType().getGardien().getOrdonne()][grille[i][j].getType().getGardien().getAbscisse()]
+                                        .getType().getGardien().setPhase(nextPhase(curentPhase));
+                                grille[grille[i][j].getType().getGardien().getOrdonne()][grille[i][j].getType().getGardien().getAbscisse()]
+                                        .getType().getGardien().setMouvementPhase(grille[i][j].getType().getGardien().getMouvementPhase());
                                 grille[i][j].removeType(2);
                                 gr.setGardienBlocked(false);
                             }
@@ -58,11 +65,15 @@ public class UpdateGrille {
                     if (grille[i][j].getType().getIntru().getPhase()==curentPhase){
                         grille[i][j].getType().getIntru().visit(gr);
                         grille[i][j].getType().getIntru().updateStateOfMind(gameMode);
-                        grille[i][j].getType().getIntru().updatePosition();
-                        grille[grille[i][j].getType().getIntru().getOrdonne()][grille[i][j].getType().getIntru().getAbscisse()].addType(4);
-                        grille[grille[i][j].getType().getIntru().getOrdonne()][grille[i][j].getType().getIntru().getAbscisse()].getType().getIntru().setPosition(grille[i][j].getType().getIntru().getPosition());
-                        grille[grille[i][j].getType().getIntru().getOrdonne()][grille[i][j].getType().getIntru().getAbscisse()].getType().getIntru().setPhase(nextPhase(curentPhase));
-                        grille[grille[i][j].getType().getIntru().getOrdonne()][grille[i][j].getType().getIntru().getAbscisse()].getType().getIntru().setStateOfMind(grille[i][j].getType().getIntru().getStateOfMind());
+                        grille[i][j].getType().getIntru().updatePosition(gameMode);
+                        grille[grille[i][j].getType().getIntru().getOrdonne()][grille[i][j]
+                                .getType().getIntru().getAbscisse()].addType(4);
+                        grille[grille[i][j].getType().getIntru().getOrdonne()][grille[i][j].getType().getIntru().getAbscisse()]
+                                .getType().getIntru().setPosition(grille[i][j].getType().getIntru().getPosition());
+                        grille[grille[i][j].getType().getIntru().getOrdonne()][grille[i][j].getType().getIntru().getAbscisse()]
+                                .getType().getIntru().setPhase(nextPhase(curentPhase));
+                        grille[grille[i][j].getType().getIntru().getOrdonne()][grille[i][j].getType().getIntru().getAbscisse()]
+                                .getType().getIntru().setStateOfMind(grille[i][j].getType().getIntru().getStateOfMind());
                         grille[i][j].removeType(4);
                     }
                 }
