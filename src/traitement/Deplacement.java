@@ -23,13 +23,13 @@ public class Deplacement{
         return valeurMin + rnd.nextInt(valeurMax - valeurMin);
     }
     public int[] deplacerAleatoir(int abscisse, int ordonne, Case[][] fieldOfView, int position,String perssonageName){
-        directions.put("nord", 1);
-        directions.put("sud", 1);
-        directions.put("east", 1);
-        directions.put("west", 1);
+        directions.put("nord",1);
+        directions.put("sud",1);
+        directions.put("east",1);
+        directions.put("west",1);
         int pourcentage;
         int direction;
-        boolean changed = false ;
+        boolean changed = false;
         int[] tabPosition = new int[4];
         pourcentage = nbrAleatoire(0,100);
         do {

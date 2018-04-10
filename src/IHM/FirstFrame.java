@@ -46,6 +46,9 @@ public class FirstFrame extends JFrame{
 		return this;
 	}
 	public FirstFrame() {
+		itemNumbers.put("Gardien",1);
+		itemNumbers.put("Intru",5);
+		itemNumbers.put("Arbre",5);
 		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -70,9 +73,7 @@ public class FirstFrame extends JFrame{
 		btnStart.addActionListener((new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
-				System.out.println(itemNumbers);
-				System.out.println(gameMode);
-				Game game = new Game(31*41,31*21,"gardien");
+				Game game = new Game(31*41,31*21,"gardien",itemNumbers.get("Gardien"),itemNumbers.get("Intru"),itemNumbers.get("Arbre"),gameMode);
 				game.setGameMode(gameMode);
 				game.start();
 			}

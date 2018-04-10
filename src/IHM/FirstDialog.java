@@ -89,6 +89,7 @@ public class FirstDialog extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						System.out.println(itemList);
 						frame.setItemNumbers(itemList);
 						frame.setGameMode(comboBox2.getSelectedIndex()-1);
 					}

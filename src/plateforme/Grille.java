@@ -7,15 +7,19 @@ public class Grille {
     private int nbrCol ;
     private int nbrDeGardien=2;
     private int nbrIntrus=4;
+    private int nbrArbre = 4;
     private int gameMode=1 ;
     public int curentPhase=0;
     private HashMap<String,Integer> gameModeTypes=new HashMap();
     private Case[][] grille;
     private HashMap<String,Integer> objectsType = new HashMap<String, Integer>();
     public boolean gardienBlocked=false;
-    public Grille(int nbrLine,int nbrCol,int gameMode){
-        if (gameMode==1)setNbrDeGardien(1);
-        else setNbrDeGardien(nbrDeGardien);
+    public Grille(int nbrLine,int nbrCol,int gameMode,int nbrDeGardien,int nbrIntrus,int nbrArbre){
+        if (gameMode==0)setNbrDeGardien(nbrDeGardien);
+        else setNbrDeGardien(1);
+        setNbrIntrus(nbrIntrus);
+        setNbrArbre(nbrArbre);
+        if (gameMode==(-1))gameMode=1;
         setGameMode(gameMode);
         setNbrCol(nbrCol);
         setNbrLine(nbrLine);
@@ -24,6 +28,11 @@ public class Grille {
         initGrille();
         initGameModeTypes();
     }
+
+    public void setNbrArbre(int nbrArbre) {
+        this.nbrArbre = nbrArbre;
+    }
+
     public void setGameMode(int gameMode) {
         this.gameMode = gameMode;
     }
@@ -71,7 +80,7 @@ public class Grille {
     public void initMur(){
         for (int i=0;i<getNbrLine();i++){
             for (int j=0;j<getNbrCol();j++){
-                if(((i==0)||(i==1))||((j==0)||(j==1))){
+                if((((j<=32)&(i==0))||((i==1)&(j<=32)))||((j==0)||(j==1)||((j==31)&(i<=18))||((j==32)&(i<=18)))){
                     grille[i][j].addType(objectsType.get("mur"));
                 }
                 if(((i>=17)&(i<=19)&((j<=14)||((j>=17)&(j<=32))))||((j==32)||(j==31))&(i<=18)){
@@ -107,7 +116,7 @@ public class Grille {
     public void initArbre(){
         int x,y;
         Random random = new Random();
-        for (int i=0;i<=5;i++){
+        for (int i=0;i<nbrArbre;i++){
             x = nbrAleatoire(0,getNbrLine());
             y = nbrAleatoire(33,getNbrCol());
             if ((!grille[x][y].getNumberTypeListe().contains(objectsType.get("eau")))&(!grille[x][y].getNumberTypeListe().contains(objectsType.get("gardien")))&(!grille[x][y].getNumberTypeListe().contains(objectsType.get("mur")))){

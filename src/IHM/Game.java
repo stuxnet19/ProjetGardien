@@ -26,17 +26,18 @@ public class Game extends JPanel implements Runnable,KeyListener{
     public int direction=2;
     private int gameMode;
     //Constructeur
-    public Game(int width,int height,String title){
+    public Game(int width,int height,String title,int nbrGardien,int nbrIntru,int nbrArbre,int gameMode){
         this.width=width;
         this.height = height;
         this.title = title;
+        setGameMode(gameMode);
+        grille=new Grille(height/31,width/31,gameMode,nbrGardien,nbrIntru,nbrArbre);
         //esseyer de la mttre dans la méthode updateData si ya un probléme
     }
     public void setGameMode(int gameMode){
         this.gameMode=gameMode;
     }
     public void initialisation(){
-        grille=new Grille(height/31,width/31,gameMode);
         init = new InitGameScrean(width,height,title);
         init.gameMap.addKeyListener(this);
         init.gameMap.setFocusable(true);
